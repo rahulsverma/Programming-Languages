@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Calculator</title>
+</head>
+<style>
+    .btns {
+        width: 300px;
+        height: 550px;
+        padding: 20px;
+        border: 7px solid rgb(128, 128, 128); 
+        background-color: rgb(185, 185, 185);
+        margin: auto;
+        font-size: 10px;
+    }
+
+    input  {      
+        width: 10px;
+        height: 10px;  
+        background-color: rgb(240, 239, 239);  
+        color: rgb(0, 0, 0);  
+        border: 3px solid gray;  
+            border-radius: 5px;  
+            padding-top: 26px;  
+            padding-bottom: 26px;
+            padding-right: 26px;
+            padding-left: 26px;
+            margin: 5px;  
+            font-size: 12px; 
+    }
+    #clear{  
+        width: 80px;  
+        border: 3px solid gray; 
+        text-align: center; 
+            border-radius: 3px;  
+            padding: 25px;  
+            background-color: rgb(240, 239, 239);  
+    }    
+    #title{
+        width: 250px;  
+        border: 3px solid black;  
+            border-radius: 3px;  
+            padding: 20px;  
+            margin: auto;  
+            font-size: 30px;   
+    }
+    #result{  
+        width: 250px;  
+        border: 3px solid black;  
+            border-radius: 3px;  
+            padding: 20px;  
+            margin: auto;  
+    }  
+</style>
+<script>
+        function dis(val)
+		{
+			document.getElementById("result").value+=val
+		}
+        function clr()
+		{
+			document.getElementById("result").value = ""
+		}
+        function solve() {
+    //create new stack
+            var expression = document.getElementById("result").value
+            let stack = [];
+
+    //loop through each character in provided expression
+            for (let idx = 0; idx < expression.length; idx++) {
+        //store each character
+                let token = expression[idx];
+
+        //if it's a number, push to stack
+        //else pop right side and left side, perform operation and push to stack
+                if (!isNaN(token)) {
+                    stack.push(Number(token));
+                } else {
+                    let rhs = stack.pop();
+                    let lhs = stack.pop();
+            //if right or left side is not available
+                    if (rhs === "UnderFlow" || lhs === "UnderFlow" ) {
+                        return "Can't perform postfix calculation";
+                    }
+                    switch (token) {
+                        case '+':
+                            stack.push(lhs + rhs);
+                            break;
+                        case '-':
+                            stack.push(lhs - rhs);
+                            break;
+                        case '*':
+                            stack.push(lhs * rhs);
+                            break;
+                        case '/':
+                            stack.push(lhs / rhs);
+                            break;
+                        case '%':
+                            stack.push(lhs % rhs);
+                            break;
+                    }
+                }
+
+            };
+   //return result of calculation
+    //return stack.pop();
+            var abc = stack.pop();
+            document.getElementById("result").value = abc
+        }
+        function off()
+        {
+            var elems = document.getElementsByClassName("btn");
+                for(var i = 0; i < elems.length; i++) 
+                {
+                elems[i].disabled = true;
+                }
+            document.getElementById("result").value = ""
+        }
+        function off2()
+        {
+            var tb = document.getElementById('result');
+            tb.placeholder = ""
+        }
+        function on()
+        {
+            var elems = document.getElementsByClassName("btn");
+            for(var i = 0; i < elems.length; i++)
+            {
+                elems[i].disabled = false;    
+            }
+        document.getElementById("result").value = ""
+        }
+        function on2()
+        {
+            var tb2 = document.getElementById('result');
+            tb2.placeholder = "0"
+        }
+</script>
+<body>
+    <div class = "btns">
+        <form>
+            <input id ="title" type = "text" value = "My Calculator" disabled>
+            <br><br>
+            <input type = "text" id = "result" placeholder="">
+            <br><br>
+            <input type="button" value ="ON" onclick = "on();on2()">
+            <input type="button" value = "OFF" onclick = "off();off2()">
+            <input type="button" class = "btn" value = "0" onclick="dis('0')">
+            <input type="button" class = "btn" value = "1" onclick="dis('1')">
+            <br><br>
+            <input type="button" class = "btn" value = "2" onclick="dis('2')">
+            <input type="button" class = "btn" value = "3" onclick="dis('3')">
+            <input type="button" class = "btn" value = "4" onclick="dis('4')">
+            <input type="button" class = "btn" value = "5" onclick="dis('5')">
+            <br><br>
+            <input type="button" class = "btn" value = "6" onclick="dis('6')">
+            <input type="button" class = "btn" value = "7" onclick="dis('7')">
+            <input type="button" class = "btn" value = "8" onclick="dis('8')">
+            <input type="button" class = "btn" value = "9" onclick="dis('9')">
+            <br><br>
+            <input type="button" class = "btn" value = "+" onclick="dis('+')">
+            <input type="button" class = "btn" value = "-" onclick="dis('-')">
+            <input type="button" class = "btn" value = "*" onclick="dis('*')">
+            <input type="button" class = "btn" value = "/" onclick="dis('/')">
+            <br><br>
+            <input type="button" class = "btn" value = "=" onclick="solve()">
+            <input type="button" class = "btn" value = "CLEAR" onclick = "clr()" id = "clear">
+    </form>
+        </div>
+
+
+
+</body>
+</html>
